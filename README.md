@@ -1,16 +1,24 @@
-This project is a C# API project works with .net Core 3.1 but compitable for latest version
-
 The following main issues were addressed in the project.
-Repository has been written, but UOW and IoC will be in the future.
-MongoDb atomic operations
-MongoDb Optimistic Concurrency
-Async transactions blocking await explained
-Crud transactions
-XUnit Testing conforms to Integration test structure
-Incremental Sequence
-Process performance monitoring in real life usage
-You can get an image with docker-compose in gcloud environment
-Advanced performance features are not available in the project yet, but you can follow them in the next projects that I will share to this repo.
+
+-Repository has been written, but UOW and IoC will be in the future.
+
+-MongoDb atomic operations
+
+-MongoDb Optimistic Concurrency
+
+-Async transactions blocking await explained
+
+-Crud transactions
+
+-XUnit Testing conforms to Integration test structure
+
+-Incremental Sequence
+
+-Process performance monitoring in real life usage
+
+-You can get an image with docker-compose in gcloud environment
+
+-Advanced performance features are not available in the project yet, but you can follow them in the next projects that I will share to this repo.
 
 My philosophy in developing this project, which is the first version, is for performance improvement, and the project is open in this sense.
 
