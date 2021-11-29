@@ -79,10 +79,10 @@ namespace HMTSolution.MongoRepo
             {
                 //auto inc implemented
                 entity.Id = _collectionCounter.GetNextNumber();
-                await RetryTask.Factory.StartNew(
-                    () => _collection.WithWriteConcern(WriteConcern.WMajority).InsertOneAsync(
-                        entity, new InsertOneOptions { BypassDocumentValidation = !validate }),
-                    CancellationToken.None, WriteRetryStrategy.Create(), new AnyException());
+                entity.UpdateTime = DateTime.UtcNow;
+
+                await _collection.InsertOneAsync(entity);
+
             }
             catch (Exception exception)
             {
@@ -102,7 +102,7 @@ namespace HMTSolution.MongoRepo
             return (await _collection.BulkWriteAsync((IEnumerable<WriteModel<T>>)entities, options)).IsAcknowledged;
         }
 
-        public virtual async Task<bool> UpdateAsync(int id, T entity, bool validate = true, bool overwriteServer = true)
+        public virtual async Task<bool> UpdateAsync(T entity, bool validate = true, bool overwriteServer = true)
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
@@ -187,7 +187,7 @@ namespace HMTSolution.MongoRepo
             return await _collection.FindOneAndDeleteAsync(filter);
         }
 
-        private bool Validate(T document, ref List<ValidationResult> errors)
+        public bool Validate(T document, ref List<ValidationResult> errors)
         {
             try
             {
@@ -203,7 +203,7 @@ namespace HMTSolution.MongoRepo
             }
         }
 
-        private T SetUpdateTime(T entity)
+        public T SetUpdateTime(T entity)
         {
             entity.UpdateTime = DateTime.UtcNow;
             return entity;

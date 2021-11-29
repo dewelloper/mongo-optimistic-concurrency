@@ -33,8 +33,7 @@ namespace HMTSolution.BCS
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors() // goes as flutter
-            // This is a test case, it may needs also some features in real life such as mapper, validator, services and settings
+            services.AddCors()
             .AddMemoryCache()
             .AddMongoSettings(Configuration)
             .AddValidations()

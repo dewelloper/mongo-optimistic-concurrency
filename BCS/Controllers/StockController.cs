@@ -70,7 +70,27 @@ namespace HMTSolution.BCS.Controllers
         {
             try
             {
-                await _stockRepository.AddAsync(data, true);
+                await _stockRepository.AddVariantAsync(data, true);
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(error: ex.Message);
+            }
+        }
+
+        [HttpPost("CreateVariants")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateVariants([FromBody] List<StockEntity> data)
+        {
+            try
+            {
+                foreach (var entity in data)
+                {
+                    await _stockRepository.UpsertVariantAsync(entity, true, false);
+                }
                 return Ok();
 
             }
@@ -86,7 +106,7 @@ namespace HMTSolution.BCS.Controllers
             try
             {
                 stockEntity.Id = id;
-                var isExist = await _stockRepository.GetByIdAsync(id);
+                var isExist = await _stockRepository.GetByIdAsync(id); // i made with Id but it would be VariantCode + productcode in real
                 if (isExist == null)
                 {
                     // explanation for await usage 
@@ -97,7 +117,7 @@ namespace HMTSolution.BCS.Controllers
                 }
 
                 stockEntity.Quantity = (int)isExist.Quantity + 1;
-                await _stockRepository.UpdateAsync(id, stockEntity, true, false);
+                await _stockRepository.UpdateAsync(stockEntity, true, false);
 
                 return Ok(stockEntity);
             }

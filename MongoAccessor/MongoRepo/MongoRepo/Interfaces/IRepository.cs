@@ -15,7 +15,7 @@ namespace HMTSolution.MongoRepo.Interfaces
         Task<T> GetByIdAsync(TKey id);
         Task AddAsync(T entity, bool validate);
         Task<bool> AddRangeAsync(IEnumerable<T> entities);
-        Task<bool> UpdateAsync(TKey id, T entity, bool validate = true, bool overwriteServer = true);
+        Task<bool> UpdateAsync(T entity, bool validate = true, bool overwriteServer = true);
         Task<T> UpdateAsync(T entity, Expression<Func<T, bool>> predicate);
         Task<T> DeleteAsync(T entity);
         Task<T> DeleteAsync(TKey id);
