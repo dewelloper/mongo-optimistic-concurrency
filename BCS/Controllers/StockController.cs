@@ -1,6 +1,7 @@
 ﻿using HMTSolution.BCS.Validations.Resolver;
 using HMTSolution.MongoRepo.Entities;
 using HMTSolution.MongoRepo.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 namespace HMTSolution.BCS.Controllers
 {
 
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class StockController : BaseController
