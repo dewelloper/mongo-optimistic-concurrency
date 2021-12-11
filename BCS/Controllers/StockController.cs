@@ -15,7 +15,7 @@ namespace HMTSolution.BCS.Controllers
 
     [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     public class StockController : BaseController
     {
         private readonly IStockRepository _stockRepository;

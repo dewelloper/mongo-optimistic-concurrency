@@ -80,37 +80,39 @@ namespace HMTSolution.BCS
 
             services.AddSwaggerGenNewtonsoftSupport();
             services.AddHttpContextAccessor();
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateAudience = true,
-                    ValidAudience = "audience.Stock.com",
-                    ValidateIssuer = true,
-                    ValidIssuer = "west-world.Stock.com",
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes("1e16040404a3aef73de4e9eb953f89ad7a74ba21c00dcf0be8148805d931d834"))
-                };
-                options.Events = new JwtBearerEvents
-                {
-                    OnTokenValidated = ctx =>
-                    {
-                        //Gerekirse burada gelen token içerisindeki çeşitli bilgilere göre doğrulam yapılabilir.
-                        return Task.CompletedTask;
-                    },
-                    OnAuthenticationFailed = ctx =>
-                    {
-                        Console.WriteLine("Exception:{0}", ctx.Exception.Message);
-                        return Task.CompletedTask;
-                    }
-                };
-            });
+            services.ConfigureAuthentication(Configuration);
+
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //}).AddJwtBearer(options =>
+            //{
+            //    options.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateAudience = false,
+            //        ValidAudience = "audience.Stock.com",
+            //        ValidateIssuer = false,
+            //        ValidIssuer = "west-world.Stock.com",
+            //        ValidateLifetime = false,
+            //        ValidateIssuerSigningKey = false,
+            //        IssuerSigningKey = new SymmetricSecurityKey(
+            //            Encoding.UTF8.GetBytes("MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAIpMKSJbPFt3htd9edicBOvTLkwoRQMveYrPRdOpaoU23E7J2D+e4qXTqQMVkRGgj7zaFAXSvHZiSYuWZ5uFzU7hn5OJmB8wvsm27eoKboU/zaHxVDGGbBOvITVK/jE+ZEdfKZMgo1FvpGI3XUyD/hubrQanMrktOJumDYHPtwepAgMBAAECgYAgzangHVX2uCZCzN9u8qr0KPZNWCvucn9Y3otIhmHe0UF2asghZxWJkef/9Eihrr0JZYzkSLUtO2kIdBeFOzqUQ6XqZf1dX47HPBE+hwXBVwnTVLmq57DBxENFRiaiGAXzPNXdtmzp+cw2EY7zoZP0+laOKjPNSpEEZ/UW5ed45QJBAPez/reupeVaOnGaELXqOozQUvURiABeKZstlqoWgz11FKosmSYp5RQjG7q6eCnUEPI4y2EgJUUSJ3dn4Sups6sCQQCO7gjKmp4WBDkxhlS9RF9N7+npBoJwPUlDtYqtr5neWaUdrPKpY/VctD86Zm/jAZpPabdqd9VUU1SYraZjbJ37AkEAhdunUuv2irLv0mRHk4c4jNAnhHgs3sYEBe/k85Wm5pdWy3++Y3lQakluusH6HeCUJ9G5VotgmKru2QAyFr5mcQJASDHFsQi+VyKU/QX8IYm6lfRb8z89fZIHQrMdNDPhhaVEOKQWAieiVMwar9X0J/a0Se59HcMftzNMJL55r/i6JwJAPJWkGYqefrV2TklXmEBO0yHskNgzTg+uVkwRXuGd+039V0sTPV8cFGt6Jo3jo3MamdxfxN3V2QUJ9Xxfy3QFdg=="))
+            //    };
+            //    options.Events = new JwtBearerEvents
+            //    {
+            //        OnTokenValidated = ctx =>
+            //        {
+            //            //Gerekirse burada gelen token içerisindeki çeşitli bilgilere göre doğrulam yapılabilir.
+            //            return Task.CompletedTask;
+            //        },
+            //        OnAuthenticationFailed = ctx =>
+            //        {
+            //            Console.WriteLine("Exception:{0}", ctx.Exception.Message);
+            //            return Task.CompletedTask;
+            //        }
+            //    };
+            //});
             services.AddControllers().AddNewtonsoftJson(p => p.SerializerSettings.Converters.Add(new StringEnumConverter()));
             services.AddHealthChecks();
         }
@@ -122,7 +124,7 @@ namespace HMTSolution.BCS
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -137,9 +139,9 @@ namespace HMTSolution.BCS
             app.UseAuthorization();
             app.UseCors("CorsPolicy");
 
-            app.UseRequestLoggerMiddleware()
-               .UseResponseLoggerMiddleware()
-               .UseErrorHandlingMiddleware();
+            //app.UseRequestLoggerMiddleware()
+            //   .UseResponseLoggerMiddleware()
+            //   .UseErrorHandlingMiddleware();
 
             app.UseSwagger(c => c.SerializeAsV2 = true);
             app.UseSwaggerUI(options =>
